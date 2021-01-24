@@ -1,0 +1,18 @@
+En primer lugar, ejecutar el script preprocessor.py para realizar data cleaning sobre los textos originales
+presentes en el directorio raw_texts y almacenarlos en el directorio training_corpus. Los almacena de la forma esperada
+por los algoritmos de entrenamiento de Gensim.
+
+Luego ejecutar el script split_files.sh para fragmentar los textos crudos 
+de modo que en los posteriores procesamientos no se generen documentos tan extensos
+y así evitar problemas de alocación de memoria (los taggeos de SpaCy generan estructuras de datos
+muy pesadas). 
+Los textos, una vez fragmentados, deben estar ubicados en diferentes carpetas dentro del directorio raw_texts.
+Cuanto más divididos estén los textos originales en diferentes carpetas, más eficiente será el procesamiento. 
+20 fragmentos por directorio es el número recomendado.
+Esto es así porque cuando se ejecute posteriormente el método tag_files, mantendrá en memoria todos los documentos 
+de cada carpeta y solo al finalizar el procesamiento de los textos de una carpeta los guardará dentro de ella 
+en un archivo binario que contendrá un objeto de tipo DocBin. 
+
+El método process_files será el encargado de llevar a memoria todos los DocBins de 
+una carpeta determinada (se indica por parámetro) y, una vez transformados en los docs originales,
+realizar el procesamiento indicado. Los resultados serán estructuras de datos que deben almacenarse como pickles. 

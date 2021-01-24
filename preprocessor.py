@@ -1,10 +1,3 @@
-#################################
-#para cargar nlp con tokenizer y sentencizer
-#NO FUNCIONA, CUANDO VA A PROCESAR EL TEXTO TIRA EROR, DICE COMO QUE
-#LE ESTOY PASANDO UN DOC PORQUE SEA QUE PRIMERO SE EJECUTE EL sentencizer
-#O EL TOKENIZER, EL SEGUNDO ESPERA UN STRING PERO RECIBE UN DOC
-#SON COMPONENTES PARA USAR SOLOS, NO DENTRO DE UN PIPELINE
-#POR ESO CARGO DOS VECES EL MODELO, UNA CON CADA COMPONENTE
 import spacy
 import re
 from pathlib import Path
@@ -13,7 +6,12 @@ import os
 nlp = spacy.load("es_core_news_md",  disable=["tagger", "parser", "ner"])
 
 #procesa con la funcion preprocess_files() los archivos que están en ./raw_texts
-#y los almacena en ./training_corpus
+#y los almacena en ./training_corpus. La limpieza que hace está pensada en función
+#tanto de la forma en la que Gensim espera los textos para alimentar a sus algoritmos como
+#de las características de los textos del proyecto Scriptorium, comentar cualquiera
+#que se quiera suprimir para un prcesamiento determinado o descomentar la que se necesite
+#de las comentadas
+
 class Preprocessor(object):
 
 	def sentencize_file(self, str):
@@ -23,10 +21,22 @@ class Preprocessor(object):
 			text=f.read()
 			f.close()
 		text=text.replace('\u200b', '')
-		text=re.sub(r'\.\d+', '.', text)
-		text=re.sub(r'(?<=\w)\—', '', text)
-		text=re.sub(r':', '.', text)
-		text=re.sub(r'\s\—', '. ', text)
+		text=re.sub(r'\{.+\}', '', text) #texto entre llaves
+		text=re.sub(r'\[.+\]', '', text) #texto entre corchetes
+		text=re.sub(r'\*', '', text)     #asteriscos
+		text=re.sub(r'\.\d+', '.', text) #dígitos
+		text=re.sub(r'(?<=\w)\—', '', text) #guiones de diálogo
+		text=re.sub(r':', '.', text) #dos puntos
+		text=re.sub(r'\s\—', '. ', text) #guiones de diálogo
+		text=re.sub(r'\[\d+\]', '', text) #dígitos entre corchetes (innesesaria si no se comenta la de los dígitos)
+		#si se quieren eliminar los títulos de los capítulos con números romanos:
+		#re.sub(r"CAPÍTULO\s[A-Z]{1,7}", '', text)
+		#Lo mismo pero en minúscula e indicando el \n:
+		#re.sub(r"Capítulo\s[A-Z]{1,7}\n", '', texto)
+		#si se quieren eliminar líneas escritas en mayúsculas (puede servir para titulos de capítulos):
+		#text=re.sub(r"(([A-Z]|[ÁÉÍÓÚÑÜ])(\W|\s)*)+\n", '', text)
+		#Si se quiere agregar un punto para delimitar como oraciones todas las líneas que no tienen punto final(muy útil para epigrafes):
+		#texto = re.sub(r"(?<=\w)\n", '.', texto)
 		doc = nlp(text)
 		return doc
 
@@ -52,6 +62,12 @@ class Preprocessor(object):
 				f.write("\n")
 			f.close()
 
+#para cargar nlp con tokenizer y sentencizer
+#no funciona, cuando va a procesar el texto levanta un eror,
+#señala el tipo de dato doc como erróneo porque sea que primero se ejecute el sentencizer
+#o el tokenizer, el segundo componente espera un string pero recibe un doc.
+#son componentes pensados para usar por separado, no dentro de un pipeline.
+#por eso cargo dos veces el modelo, una con cada componente
 	def preprocess_files(self):
 		sentencizer = nlp.create_pipe("sentencizer")
 		nlp.add_pipe(sentencizer)
