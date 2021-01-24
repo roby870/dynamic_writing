@@ -1,0 +1,6 @@
+#!/bin/bash
+
+lines_head=$1
+file=$2
+final_file=$3
+head -$lines_head $file | tee $final_file > /dev/null

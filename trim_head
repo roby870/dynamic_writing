@@ -1,0 +1,8 @@
+#!/bin/bash
+
+total_lines=$1
+lines_head=$2
+((selected_tail=  $total_lines - $lines_head))
+file=$3
+final_file=$4
+tail -$selected_tail $file | tee $final_file > /dev/null
