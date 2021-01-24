@@ -16,8 +16,9 @@ def tag_file(str, model):
 	return doc
 
 
-#taggea todos los textos del directorio raw_texts y guarda los docs resultantes
-#como docbins en el archivo que llama "doc_bins"
+#taggea todos los textos del directorio num_docs_folder dentro del directorio raw_texts
+#y guarda los docs resultantes como docbins en el archivo que llama "doc_bins" dentro
+#de ese mismo directorio
 
 def tag_files(model, num_docs_folder):
 	doc_bin = DocBin(attrs=["LEMMA", "POS", "TAG", "DEP", "HEAD"], store_user_data=True)
