@@ -122,6 +122,13 @@ class Sequences(object):
 	def vector_norm(self):
 		del self._vector_norm
 
+	def set_gramatical_tags(self, gender, number, person, tense, mood):
+		self.gender = gender
+		self.number = number
+		self.person = person
+		self.tense = tense
+		self.mood = mood
+
 #puede recibir un tag con todos los atributos de un token o un recorte de ese tag
 #con solo uno de sus atributos, funciona para ambos casos
 	def set_tag(self, tag):
