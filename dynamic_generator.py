@@ -52,6 +52,19 @@ class Dynamic_Generator(object):
                                 results.append(chunk)
         return results
 
+    def extend_sequence(model, sequence, components, similar_chunk):
+        new_components = components
+        new_components.append(similar_chunk)
+        new_text = sequence.text + ' ' + similar_chunk.text
+        new_doc = model(sequence.text.lower() + ' ' +
+                        similar_chunk.text.lower())
+        vector = new_doc.vector
+        has_vector = new_doc.has_vector
+        vector_norm = new_doc.vector_norm
+        new_seq = Sequences(new_text, new_components,
+                            has_vector, vector, vector_norm)
+        return new_seq
+
     # selecciona los n chunks mas similares a cada secuencia y los concatena
     # como lo hace? utiliza el token taggeado como pos de cada chunk para chequear que su tag
     # concuerde con las features de la secuencia, en ese caso lo selecciona
@@ -69,17 +82,8 @@ class Dynamic_Generator(object):
                 sequence, filtered_chunks, n)
             components = sequence.components.copy()
             for similar_chunk in most_similars:
-                new_components = components
-                new_components.append(similar_chunk)
-                new_text = sequence.text + ' ' + similar_chunk.text
-                new_doc = model(sequence.text.lower() + ' ' +
-                                similar_chunk.text.lower())
-                vector = new_doc.vector
-                has_vector = new_doc.has_vector
-                vector_norm = new_doc.vector_norm
-                new_seq = Sequences(new_text, new_components,
-                                    has_vector, vector, vector_norm)
-                new_seq.set_gramatical_tags(sequence. gender, sequence.number, sequence.person, sequence.tense, sequence.mood)
+                new_seq = extend_sequence(model, sequence, components, similar_chunk)
+                new_seq.set_gramatical_tags(sequence.gender, sequence.number, sequence.person, sequence.tense, sequence.mood)
                 sequences.append(new_seq)
         return sequences
 
@@ -96,45 +100,32 @@ class Dynamic_Generator(object):
                 sequence, filtered_chunks, n)
             components = sequence.components.copy()
             for similar_chunk in most_similars:
-                new_components = components
-                new_components.append(similar_chunk)
-                new_text = sequence.text + ' ' + similar_chunk.text
-                new_doc = model(sequence.text.lower() + ' ' +
-                                similar_chunk.text.lower())
-                vector = new_doc.vector
-                has_vector = new_doc.has_vector
-                vector_norm = new_doc.vector_norm
-                new_seq = Sequences(new_text, new_components,
-                                    has_vector, vector, vector_norm)
-                new_seq.set_gramatical_tags(sequence. gender, sequence.number, sequence.person, sequence.tense, sequence.mood)
+                new_seq = extend_sequence(model, sequence, components, similar_chunk)
+                new_seq.set_gramatical_tags(sequence.gender, sequence.number, sequence.person, sequence.tense, sequence.mood)
                 sequences.append(new_seq)
                 chunks_list.remove(similar_chunk)
         return sequences
 
     # como el anterior método pero sin considerar la concordancia gramatical,
     # tener en cuenta que borra los tags de la secuencia
-    def append_chunks_to_most_similars_sequences(nlp_gensim, sequences, chunks, n):
+    def append_chunks_to_most_similars_sequences(model, sequences, chunks, n):
         new_seqs = []
         for seq in sequences:
             similars = most_similar_chunks_to_target(seq, chunks, n)
             for s in similars:
-                text = seq.text + ' ' + s.text
-                doc = nlp_gensim(seq.text.lower() + ' ' + s.text)
                 components = seq.components.copy() + [s]
-                new_seqs.append(Sequences(text, components,
-                                          doc.has_vector, doc.vector, doc.vector_norm))
+                new_seq = extend_sequence(model, seq, components, s)
+                new_seqs.append(new_seq)
         return new_seqs
 
-    def append_chunks_to_most_similars_sequences_forbidding_repeats(nlp_gensim, sequences, chunks, n):
+    def append_chunks_to_most_similars_sequences_forbidding_repeats(model, sequences, chunks, n):
         new_seqs = []
         for seq in sequences:
             similars = most_similar_chunks_to_target(seq, chunks, n)
             for s in similars:
-                text = seq.text + ' ' + s.text
-                doc = nlp_gensim(seq.text.lower() + ' ' + s.text)
                 components = seq.components.copy() + [s]
-                new_seqs.append(Sequences(text, components,
-                                          doc.has_vector, doc.vector, doc.vector_norm))
+                new_seq = extend_sequence(model, seq, components, s)
+                new_seqs.append(new_seq)
                 chunks.remove(s)
         return new_seqs
 
@@ -153,21 +144,6 @@ class Dynamic_Generator(object):
                                           doc.has_vector, doc.vector, doc.vector_norm))
                 chunks.remove(s)
         return new_seqs
-
-    # puede recibir una lista de sequences, chunks o tokens
-    # los imprime en un archivo, uno por linea con su numero
-    # de objeto en la lista
-    def print_on_file(verbal_list, file_name):
-        data_folder = Path("./")
-        data_path = data_folder / file_name
-        counter = 0
-        with data_path.open("w") as f:
-            for verbal_object in verbal_list:
-                output = f.write("%s" % verbal_object.text)
-                output = f.write("  ")
-                output = f.write("%s " % str(counter))
-                counter += 1
-                output = f.write("\n")
 
     #concatena un string en el caso de que la secuencia esté taggeada
     #con todos los atributos indicados en sequence_tags

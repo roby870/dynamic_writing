@@ -1,3 +1,6 @@
+from pathlib import Path
+import os
+
 def remove_last_spaces(chunks_list):
 	for chunk in chunks_list:
 		str = chunk.text.lower() # .lower() para filtrar chunks iguales que solo difieren en una o más mayúsculas
@@ -18,3 +21,18 @@ def set_chunks_list(chunks_list):
 			str_list.append(str)
 			chunks.append(chunk)
 	return chunks
+
+# puede recibir una lista de sequences, chunks o tokens
+# los imprime en un archivo, uno por linea con su numero
+# de objeto en la lista
+def print_on_file(verbal_list, file_name):
+    data_folder = Path("./")
+    data_path = data_folder / file_name
+    counter = 0
+    with data_path.open("w") as f:
+        for verbal_object in verbal_list:
+            output = f.write("%s" % verbal_object.text)
+            output = f.write("  ")
+            output = f.write("%s " % str(counter))
+            counter += 1
+            output = f.write("\n")
