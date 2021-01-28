@@ -13,6 +13,10 @@ Esto es así porque cuando se ejecute posteriormente el método tag_files, mante
 de cada carpeta y solo al finalizar el procesamiento de los textos de una carpeta los guardará dentro de ella 
 en un archivo binario que contendrá un objeto de tipo DocBin. 
 
-El método process_files será el encargado de llevar a memoria todos los DocBins de 
+Los objetos de la clase Chunk_Extractor, mediante el método process_files, serán los encargados de llevar a memoria todos los DocBins de 
 una carpeta determinada (se indica por parámetro) y, una vez transformados en los docs originales,
-realizar el procesamiento indicado. Los resultados serán estructuras de datos que deben almacenarse como pickles. 
+realizar el procesamiento indicado. Los resultados serán estructuras de datos que pueden almacenarse como pickles. 
+
+Los objetos de la clase Dynamic_Generator tienen la responsabilidad de extender una secuencia determinada. Es la clase core del sistema.
+
+
