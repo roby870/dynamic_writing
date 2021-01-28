@@ -17,6 +17,8 @@ Los objetos de la clase Chunk_Extractor, mediante el método process_files, ser�
 una carpeta determinada (se indica por parámetro) y, una vez transformados en los docs originales,
 realizar el procesamiento indicado. Los resultados serán estructuras de datos que pueden almacenarse como pickles. 
 
-Los objetos de la clase Dynamic_Generator tienen la responsabilidad de extender una secuencia determinada. Es la clase core del sistema.
+Los objetos de la clase Dynamic_Generator tienen la responsabilidad de extender una secuencia determinada. Es la clase core del sistema. La API debería hacerle peticiones a objetos de esta clase.
 
+Ejemplo de uso 
 
+Para generar una secuencia narrativa que componga un breve relato de viaje, una peripecia, en principio mínima. 

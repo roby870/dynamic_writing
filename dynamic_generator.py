@@ -36,7 +36,7 @@ class Dynamic_Generator(object):
     # se deben pasar todos los tags actuales de la secuencia y la función chequea
     # que el token del chunk taggeado como pos cumpla con todos los sequence_tags indicados,
     # en ese caso selecciona el chunk
-    def filter_chunks(chunks, pos, *sequence_tags):
+    def __filter_chunks(chunks, pos, *sequence_tags):
         number_of_attrs = len(sequence_tags)
         results = []
         for chunk in chunks:
@@ -52,7 +52,7 @@ class Dynamic_Generator(object):
                                 results.append(chunk)
         return results
 
-    def extend_sequence(model, sequence, components, similar_chunk, reverse = False):
+    def __extend_sequence(model, sequence, components, similar_chunk, reverse = False):
         new_components = components
         new_components.append(similar_chunk)
         if (reverse):
@@ -79,7 +79,7 @@ class Dynamic_Generator(object):
     def concat_sequences_with_most_similars_chunks(model, sequences_list, chunks_list, pos, n, reverse = false):
         sequences = []
         for sequence in sequences_list:
-            filtered_chunks = filter_chunks(
+            filtered_chunks = self.__filter_chunks(
                 chunks_list, pos, *sequence.get_features())
             if(len(filtered_chunks) < n):
                 continue
@@ -87,7 +87,7 @@ class Dynamic_Generator(object):
                 sequence, filtered_chunks, n)
             components = sequence.components.copy()
             for similar_chunk in most_similars:
-                new_seq = extend_sequence(model, sequence, components, similar_chunk, reverse)
+                new_seq = self.__extend_sequence(model, sequence, components, similar_chunk, reverse)
                 new_seq.set_gramatical_tags(sequence.gender, sequence.number, sequence.person, sequence.tense, sequence.mood)
                 sequences.append(new_seq)
         return sequences
@@ -97,7 +97,7 @@ class Dynamic_Generator(object):
     def concat_sequences_with_most_similars_chunks_forbbiding_repeats(model, sequences_list, chunks_list, pos, n, reverse = false):
         sequences = []
         for sequence in sequences_list:
-            filtered_chunks = filter_chunks(
+            filtered_chunks = self.__filter_chunks(
                 chunks_list, pos, *sequence.get_features())
             if(len(filtered_chunks) < n):
                 continue
@@ -105,7 +105,7 @@ class Dynamic_Generator(object):
                 sequence, filtered_chunks, n)
             components = sequence.components.copy()
             for similar_chunk in most_similars:
-                new_seq = extend_sequence(model, sequence, components, similar_chunk, reverse)
+                new_seq = self.__extend_sequence(model, sequence, components, similar_chunk, reverse)
                 new_seq.set_gramatical_tags(sequence.gender, sequence.number, sequence.person, sequence.tense, sequence.mood)
                 sequences.append(new_seq)
                 chunks_list.remove(similar_chunk)
@@ -119,7 +119,7 @@ class Dynamic_Generator(object):
             similars = most_similar_chunks_to_target(seq, chunks, n)
             for s in similars:
                 components = seq.components.copy() + [s]
-                new_seq = extend_sequence(model, seq, components, s, reverse)
+                new_seq = self.__extend_sequence(model, seq, components, s, reverse)
                 new_seqs.append(new_seq)
         return new_seqs
 
@@ -129,7 +129,7 @@ class Dynamic_Generator(object):
             similars = most_similar_chunks_to_target(seq, chunks, n)
             for s in similars:
                 components = seq.components.copy() + [s]
-                new_seq = extend_sequence(model, seq, components, s, reverse)
+                new_seq = self.__extend_sequence(model, seq, components, s, reverse)
                 new_seqs.append(new_seq)
                 chunks.remove(s)
         return new_seqs
