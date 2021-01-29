@@ -130,50 +130,24 @@ class Gramatical_Filter(object):
                     self._append_token_as_chunk(token, doc, verbs)
         return verbs  # retorna una lista de Chunks
 
-
     # colocar stopwords en true si se quieren incluir stopwords
-    def get_head(doc, nlp_gensim, dep_tag, stopwords=False):
+    def get_head(doc, dep_tag, stopwords=False):
         chunks=[]
         if(not stopwords):
             for token in doc:
                 if(not token.is_stop):
                     if token.dep_ == dep_tag:
-                        tokens=[]
-                        tokens.append(
-                            Tokens(token.head.text, token.head.pos_, token.head.tag_))
-                        new_doc=nlp_gensim(token.head.text.lower())
-                        has_vector=new_doc.has_vector
-                        vector=new_doc.vector
-                        vector_norm=new_doc.vector_norm
-                        chunks.append(Chunks(token.head.text.lower(), tokens,
-                                             doc._.source, has_vector, vector, vector_norm))
+                        self.__append_token_as_chunk(token.head, doc, chunks)
         else:
             for token in doc:
                 if token.dep_ == dep_tag:
-                    tokens=[]
-                    tokens.append(
-                        Tokens(token.head.text.lower(), token.head.pos_, token.head.tag_))
-                    new_doc=nlp_gensim(token.head.text.lower())
-                    has_vector=new_doc.has_vector
-                    vector=new_doc.vector
-                    vector_norm=new_doc.vector_norm
-                    chunks.append(Chunks(token.head.text.lower(), tokens,
-                                         doc._.source, has_vector, vector, vector_norm))
+                    self.__append_token_as_chunk(token.head, doc, chunks)
         return chunks
 
-
     # selecciona los tokens taggeados como dep_tag
-
-    def process_token_by_dep(doc, nlp_gensim, dep_tag):
+    def process_token_by_dep(doc, dep_tag):
         chunks=[]
         for token in doc:
             if token.dep_ == dep_tag:
-                tokens=[]
-                tokens.append(Tokens(token.text.lower(), token.pos_, token.tag_))
-                new_doc=nlp_gensim(token.text.lower())
-                has_vector=new_doc.has_vector
-                vector=new_doc.vector
-                vector_norm=new_doc.vector_norm
-                chunks.append(Chunks(token.text.lower(), tokens,
-                                     doc._.source, has_vector, vector, vector_norm))
-        return chunks  # retorna una lista de spans
+                self.__append_token_as_chunk(token.head, doc, chunks)
+        return chunks
