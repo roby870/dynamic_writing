@@ -1,7 +1,7 @@
 from tokens import *
 from chunks import *
 
-class Gramatical_Filter(object):
+class GramaticalFilters(object):
     def __init__(self, nlp_gensim):
         self._nlp_gensim = nlp_gensim
 
@@ -57,7 +57,7 @@ class Gramatical_Filter(object):
         chunks.append(Chunks(token.text.lower(), [
                       t], doc._.source, new_token.has_vector, new_token.vector, new_token.vector_norm))
 
-    def __get_tokens_by_pos_and_attrs(doc, gensim_model, pos_tag, attrs):
+    def __get_tokens_by_pos_and_attrs(doc, pos_tag, attrs):
         number_of_attrs = len(attrs)
         chunks = []
         for token in doc:
@@ -120,7 +120,7 @@ class Gramatical_Filter(object):
 
 
     # busca verbos con las caracteristicas indicadas
-    def process_one_word_verbs(doc, gensim_model, person, number, tense, mood):
+    def process_one_word_verbs(doc, person, number, tense, mood):
         verbs=[]
         for token in doc:
             if token.pos_ == "VERB":

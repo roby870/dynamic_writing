@@ -15,9 +15,10 @@ en un archivo binario que contendrá un objeto de tipo DocBin.
 
 Los objetos de la clase Chunk_Extractor, mediante el método process_files, serán los encargados de llevar a memoria todos los DocBins de 
 una carpeta determinada (se indica por parámetro) y, una vez transformados en los docs originales,
-realizar el procesamiento indicado. Los resultados serán estructuras de datos que pueden almacenarse como pickles. 
+realizar el procesamiento indicado. Los resultados serán estructuras de datos que pueden almacenarse como pickles. Utilizará objetos
+de las distintas clases de Filters para realizar los diversos procesamientos.
 
-Los objetos de la clase Dynamic_Generator tienen la responsabilidad de extender una secuencia determinada. Es la clase core del sistema. La API debería hacerle peticiones a objetos de esta clase.
+Los objetos de la clase Dynamic_Generator tienen la responsabilidad de extender una secuencia determinada. Es la clase core del sistema. La API debería hacerle peticiones a objetos de esta clase, salvo que se dé al usuario la posibilidad de armar su propio conjunto de datos, en ese caso también se realizarían peticiones a objetos de la clase Chunk_Extractor.
 
 Ejemplo de uso 
 
