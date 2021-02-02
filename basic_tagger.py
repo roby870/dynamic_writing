@@ -2,7 +2,7 @@ import os
 from spacy.tokens import DocBin
 from pathlib import Path
 
-class Basic_Tagger(object):
+class BasicTagger(object):
 
 	#lee el archivo llamado str en el directorio raw_texts y retorna un doc
 	def tag_file(str, model):

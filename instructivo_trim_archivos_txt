@@ -2,7 +2,6 @@ Para eliminar las n primeras líneas de un archivo txt:
 
 ./trim_head numero_total_lineas n_primeras_líneas archivo.txt nombre_nuevo_archivo.txt
 
-
 Para quedarse con las n primeras líneas de un archivo txt:
 
 trim_tail n archivo.txt nombre_nuevo_archivo.txt
