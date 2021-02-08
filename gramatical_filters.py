@@ -32,11 +32,11 @@ class GramaticalFilters(object):
         chunk = Chunks(span.text.lower(), tokens, doc._.source, has_vector, vector, vector_norm)
         return chunk
 
-    # recibe una cadena de tags(pos_tags, lista de strings),
+    # recibe una cadena de tags(pos_tags es una lista de strings),
     # busca en doc un token que esté taggeado como dep_tag y
     # si su subtree es una secuencia de tokens taggeada como
     # pos_tags, la selecciona. Retorna todas las seleccionadas (chunks)
-    def process(doc, dep_tag, pos_tags):
+    def process_pos_sequence_by_dep_tag(doc, dep_tag, pos_tags):
         chunks = []
         chunk_length = len(pos_tags)
         for token in doc:

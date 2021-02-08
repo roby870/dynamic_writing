@@ -24,4 +24,4 @@ Los objetos de la clase Dynamic_Generator tienen la responsabilidad de extender 
 El uso esperado es el de un asistente para la escritura, en el que se le pidan fragmentos del texto en construcción al sistema pero se espera que el usuario también contribuya en la elaboración del texto mediante su propia escritura. 
 El proyecto final comprende el desarrollo de una interfaz, desde la que el usuario pueda escribir el texto con la asistencia de este sistema. Eventualmente también podría desarrollarse la funcionalidad para que el usuario establezca desde la interfaz su propio corpus, adjuntando archivos de extensión txt al sistema para que el se realice el preprocesamiento y procesamiento de ese corpus, estableciendo tanto los DocBins del sistema como el modelo de Gensim a partir de esos archivos txt enviados por el usuario.  
 
-
+Se agregan scrips de ejemplos de uso, tanto de cómo extraer chunks del corpus (archivo extract_chunks.py) como del proceso de generación de una secuencia textual (generation.py)  
