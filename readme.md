@@ -1,11 +1,11 @@
 <h1>Dynamic Writing</h1>
 
-<h4>Preprocesamiento del corpus y entrenamiento del modelo de similitud mediante el algoritmo word2vec<h4/>
+<h4>Preprocesamiento del corpus y entrenamiento del modelo de similitud mediante el algoritmo word2vec</h4>
 
 En primer lugar, ejecutar el script preprocessor.py para realizar data cleaning sobre los textos originales (se espera formato txt)
 presentes en el directorio raw_texts y almacenarlos en el directorio training_corpus. Los almacena de la forma esperada
 por los algoritmos de entrenamiento de Gensim. Optativamente, se pueden utilizar los scripts trim_head y trim_tail para eliminar las n primeras líneas de un archivo txt ó para quedarse con las n primeras líneas de un archivo txt. En el archivo instructivo_trim_archivos se indica cómo invocar a los scripts con los parámetros pertinentes.
-Para crear el modelo que servirá para establecer niveles de similitud entre distintos chunks se debe ejecutar el script train_and_save_w2v.py. En ese archivo también se indican los pasos a seguir para que el modelo (entrenado con la librería Gensim) quede interpretable por SpaCy.  
+Para crear el modelo que servirá para establecer niveles de similitud entre distintos chunks se debe ejecutar el script train_and_save_w2v.py. En ese archivo también se indican los pasos a seguir para que el modelo (entrenado con la librería Gensim) quede interpretable por SpaCy.
 
 <h4>Taggeo del corpus</h4>
 
