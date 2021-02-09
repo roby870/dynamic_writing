@@ -1,3 +1,4 @@
+#script de ejemplo
 #Supongamos que queremos establecer una secuencia sencilla que consista en la
 #palabra "Vi" + obj (sustantivos que en el corpus cumplan la función sintáctica de objetos)
 #Primero establecemos un doc con la palabra "vi" procesada por nuestro modelo,
@@ -6,13 +7,13 @@ doc = nlp_gensim("vi")
 seq = Sequences(doc.text, [], doc.has_vector, doc.vector, doc.vector_norm)
 #instanciamos los objetos que vamos a necesitar:
 similarity_filter = SimilarityFilters()
-dynamic_generator = DynamicGenerator()
+dynamic_generator = DynamicGenerator(nlp_gensim)
 # para obtener los 50 objetos mas similares de la lista list_obj
 #(asumimos que previamente se almacenaron sustantivos como chunks
 #que en el corpus cumplen la función de objetos en la variable list_obj):
 objs = similarity_filter.most_similar_chunks_to_target(seq, list_obj, 50)
 # para obtener los 50 mas similares de la lista y devolverlos concatenados al tarjet:
-sequences = dynamic_generator.append_chunks_to_most_similars_sequences(nlp_gensim, [seq], list_obj, 50)
+sequences = dynamic_generator.append_chunks_to_most_similars_sequences([seq], list_obj, 50)
 
 
 #otro ejemplo: se elige una palabra o frase para buscar en una lista las mas similares y

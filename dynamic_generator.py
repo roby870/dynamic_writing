@@ -15,8 +15,21 @@ from utils import *
 
 Doc.set_extension("source", default='')
 
-
 class DynamicGenerator(object):
+    def __init__(self, model):
+		self._model = model
+
+    @property
+	def model(self):
+		return self._model
+
+	@model.setter
+	def model(self, model):
+		self._model = model
+
+	@model.deleter
+	def model(self):
+		del self._model
 
     # selecciona el componente numero n (en una sequence el orden de los componentes es conocido)
     # y dentro de ese chunk el token taggeado como pos, de ese saca todas las features indicadas en sequence tags
@@ -54,16 +67,16 @@ class DynamicGenerator(object):
                                 results.append(chunk)
         return results
 
-    def __extend_sequence(model, sequence, components, similar_chunk, reverse=False):
+    def __extend_sequence(sequence, components, similar_chunk, reverse=False):
         new_components = components
         new_components.append(similar_chunk)
         if (reverse):
             new_text = similar_chunk.text + ' ' + sequence.text
-            new_doc = model(similar_chunk.text.lower() + ' ' +
+            new_doc = self.model(similar_chunk.text.lower() + ' ' +
                             sequence.text.lower())
         else:
             new_text = sequence.text + ' ' + similar_chunk.text
-            new_doc = model(sequence.text.lower() + ' ' +
+            new_doc = self.model(sequence.text.lower() + ' ' +
                             similar_chunk.text.lower())
         vector = new_doc.vector
         has_vector = new_doc.has_vector
@@ -78,8 +91,7 @@ class DynamicGenerator(object):
     # para luego evaluar si esta dentro de los mas similares semanticamente.
     # El parámetro n es para indicar con cuántos chunks se quiere concatenar cada secuencia
     # (un n grande dará como resultado un crecimiento exponencial en la cantidad de secuencias)
-    def concat_sequences_with_most_similars_chunks(
-            model, sequences_list, chunks_list, pos, n, reverse=false):
+    def concat_sequences_with_most_similars_chunks(sequences_list, chunks_list, pos, n, reverse=false):
         sequences = []
         for sequence in sequences_list:
             filtered_chunks = self.__filter_chunks(
@@ -90,15 +102,14 @@ class DynamicGenerator(object):
                 sequence, filtered_chunks, n)
             components = sequence.components.copy()
             for similar_chunk in most_similars:
-                new_seq = self.__extend_sequence(model, sequence, components, similar_chunk, reverse)
+                new_seq = self.__extend_sequence(sequence, components, similar_chunk, reverse)
                 new_seq.set_gramatical_tags(sequence.gender, sequence.number, sequence.person, sequence.tense, sequence.mood)
                 sequences.append(new_seq)
         return sequences
 
     # pasar una copia de chunks_list si no se quiere modificarla, ya que este método elimina
     # de la lista los chunks que concatena en cada iteración
-    def concat_sequences_with_most_similars_chunks_forbbiding_repeats(
-            model, sequences_list, chunks_list, pos, n, reverse=false):
+    def concat_sequences_with_most_similars_chunks_forbbiding_repeats(sequences_list, chunks_list, pos, n, reverse=false):
         sequences = []
         for sequence in sequences_list:
             filtered_chunks = self.__filter_chunks(
@@ -109,8 +120,7 @@ class DynamicGenerator(object):
                 sequence, filtered_chunks, n)
             components = sequence.components.copy()
             for similar_chunk in most_similars:
-                new_seq = self.__extend_sequence(
-                    model, sequence, components, similar_chunk, reverse)
+                new_seq = self.__extend_sequence(sequence, components, similar_chunk, reverse)
                 new_seq.set_gramatical_tags(sequence.gender, sequence.number, sequence.person, sequence.tense, sequence.mood)
                 sequences.append(new_seq)
                 chunks_list.remove(similar_chunk)
@@ -118,27 +128,23 @@ class DynamicGenerator(object):
 
     # como el anterior método pero sin considerar la concordancia gramatical,
     # tener en cuenta que borra los tags de la secuencia
-    def append_chunks_to_most_similars_sequences(
-            model, sequences, chunks, n, reverse=false):
+    def append_chunks_to_most_similars_sequences(sequences, chunks, n, reverse=false):
         new_seqs = []
         for seq in sequences:
             similars = most_similar_chunks_to_target(seq, chunks, n)
             for s in similars:
                 components = seq.components.copy() + [s]
-                new_seq = self.__extend_sequence(
-                    model, seq, components, s, reverse)
+                new_seq = self.__extend_sequence(seq, components, s, reverse)
                 new_seqs.append(new_seq)
         return new_seqs
 
-    def append_chunks_to_most_similars_sequences_forbidding_repeats(
-            model, sequences, chunks, n, reverse=false):
+    def append_chunks_to_most_similars_sequences_forbidding_repeats(sequences, chunks, n, reverse=false):
         new_seqs = []
         for seq in sequences:
             similars = most_similar_chunks_to_target(seq, chunks, n)
             for s in similars:
                 components = seq.components.copy() + [s]
-                new_seq = self.__extend_sequence(
-                    model, seq, components, s, reverse)
+                new_seq = self.__extend_sequence(seq, components, s, reverse)
                 new_seqs.append(new_seq)
                 chunks.remove(s)
         return new_seqs

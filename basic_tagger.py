@@ -3,6 +3,20 @@ from spacy.tokens import DocBin
 from pathlib import Path
 
 class BasicTagger(object):
+	def __init__(self, model):
+		self._model = model
+
+    @property
+	def model(self):
+		return self._model
+
+	@model.setter
+	def model(self, model):
+		self._model = model
+
+	@model.deleter
+	def model(self):
+		del self._model
 
 	#lee el archivo llamado str en el directorio raw_texts y retorna un doc
 	def tag_file(str, model):
@@ -11,7 +25,7 @@ class BasicTagger(object):
 		with data_path.open("r") as f:
 			text=f.read()
 			f.close()
-		doc = model(text)
+		doc = self.model(text)
 		return doc
 
 	#taggea todos los textos del directorio num_docs_folder dentro del directorio raw_texts
@@ -26,7 +40,7 @@ class BasicTagger(object):
 			with data_path.open("r") as f:
 				text=f.read()
 				f.close()
-			doc = model(text)
+			doc = self.model(text)
 			doc._.source = fname
 			doc_bin.add(doc)
 		bytes_data = doc_bin.to_bytes()

@@ -19,7 +19,7 @@ class Chunk_Extractor(object):
 	def __init__(self, model):
 		self._model = model
 
-    @property 	#en la variable text va el doc procesado por el modelo entrenado con gensim
+    @property 	
 	def model(self):
 		return self._model
 
