@@ -15,12 +15,12 @@ Los textos, una vez fragmentados, deben estar ubicados en diferentes subdirector
 <h4>Extracción y almacenamiento de chunks</h4>
 
 Los objetos de la clase Chunk_Extractor, mediante el método process_files, serán los encargados de llevar a memoria todos los DocBins de 
-un directorio determinado (se indica por parámetro) y, una vez transformados en los docs originales, realizar el procesamiento indicado. Utilizará objetos de las distintas clases de Filters para realizar los diversos procesamientos. Los resultados serán estructuras de datos que pueden almacenarse como pickles ó en una base de datos, para que después se utilicen como sugerencias dentro del proceso generativo. 
+un directorio determinado y, una vez transformados en los docs originales, realizar el procesamiento indicado. Utilizará objetos de las distintas clases de Filters para realizar los diversos procesamientos. Los resultados serán estructuras de datos que pueden almacenarse como pickles ó en una base de datos, para que después se utilicen como sugerencias dentro del proceso generativo. 
 
 <h4>Proceso de escritura </h4>
 
-Los objetos de la clase Dynamic_Generator tienen la responsabilidad de extender una secuencia determinada. Es la clase core del sistema. La API debería hacer peticiones que el sistema delegue en objetos de esta clase, salvo que se dé al usuario la posibilidad de elaborar su propio conjunto de datos a partir de los documentos almacenados como DocBins, en ese caso también se realizarían peticiones que se deleguen a objetos de la clase Chunk_Extractor.
-El sistema cuenta con mecanismos morfosintácticos como semánticos (gracias al modelo de word embeddings entrenado) para asistir al usuario en su proceso de escritura.
+Los objetos de la clase Dynamic_Generator tienen la responsabilidad de extender una secuencia determinada. Es la clase core del sistema. La API debería hacer peticiones que el sistema delegue en objetos de esta clase, salvo que se dé al usuario la posibilidad de elaborar su propio conjunto de datos a partir de los documentos almacenados como DocBins; en ese caso también se realizarían peticiones que se deleguen a objetos de la clase Chunk_Extractor.
+El sistema cuenta tanto con mecanismos morfosintácticos como semánticos (gracias al modelo de word embeddings entrenado) para asistir al usuario en su proceso de escritura.
 
 <h4>Casos de uso</h4>
 
