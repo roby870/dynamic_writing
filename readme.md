@@ -1,4 +1,4 @@
-<h1>Dynamic Writing</h1>
+<h1>Dynamic Writing: asistente de escritura</h1>
 
 <h4>Preprocesamiento del corpus y entrenamiento del modelo de similitud mediante el algoritmo word2vec</h4>
 
