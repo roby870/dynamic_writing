@@ -1,5 +1,5 @@
 #script de ejemplo
-
+import spacy
 from chunk_extractor import *
 from utils import *
 from dynamic_generator import *

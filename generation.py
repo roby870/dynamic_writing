@@ -1,8 +1,13 @@
 #script de ejemplo
+import spacy
+from sequences import *
+from similarity_filters import *
+from dynamic_generator import *
 #Supongamos que queremos establecer una secuencia sencilla que consista en la
 #palabra "Vi" + obj (sustantivos que en el corpus cumplan la función sintáctica de objetos)
 #Primero establecemos un doc con la palabra "vi" procesada por nuestro modelo,
 #es decir por el que entrenamos utilizando gensim:
+nlp_gensim = spacy.load('./data/spacy.word2vec.model/')
 doc = nlp_gensim("vi")
 seq = Sequences(doc.text, [], doc.has_vector, doc.vector, doc.vector_norm)
 #instanciamos los objetos que vamos a necesitar:
