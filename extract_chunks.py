@@ -18,11 +18,11 @@ gramatical_filter = GramaticalFilters(nlp_gensim)
 
 #vemos cómo se pueden extraer chunks y posteriormente cargarlos
 #cuando ya estén almacenados como pickles
-#(sentencias que deberian ejecutarse dentro de un loop para recorrer todas las carpetas
+#(estas sentencias deberían ejecutarse dentro de un loop para recorrer todas las carpetas
 #del directorio ./raw_texts, num_docs_folder correspondería
 #al número de la iteración, veremos un ejemplo de ese loop más abajo)
 list_nsubj = dynamic_generator.process_files(num_docs_folder, gramatical_filter, process_pos_sequence_by_dep_tag, "nsubj", ["DET", "NOUN"])
-list_nsubj = dynamic_generator.process_files(num_docs_folder, gramatical_filter, process_pos_sequence_by_dep_tag, "nmod", ["ADP","DET", "NOUN"])
+list_nmod = dynamic_generator.process_files(num_docs_folder, gramatical_filter, process_pos_sequence_by_dep_tag, "nmod", ["ADP","DET", "NOUN"])
 list_obj = dynamic_generator.process_files(num_docs_folder, gramatical_filter, process_pos_sequence_by_dep_tag, "obj", ["DET", "NOUN"])
 list_root_3_sing_imp_ind = dynamic_generator.process_files(num_docs_folder, gramatical_filter, process_one_word_verbs, nlp, "3", "Sing", "Imp", "Ind")
 list_nsubj = load_pickle("nsubj")
@@ -51,7 +51,7 @@ res = dynamic_generator.process_files(num_docs_folder, gramatical_filter, proces
 
 
 #ejemplo del loop que mencionábamos para extraer chunks de todos los doc bins
-#presentes en el directorio ./raw_texts, en el caso de que hubiera 7 directorios
+#presentes en el directorio ./raw_texts, en el caso de que hubiera siete directorios
 total = []
 for n in range(1,8):
     n_as_str = str(n)
