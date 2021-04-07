@@ -45,7 +45,7 @@ class Chunk_Extractor(object):						#para que no levante un error en las sucesiv
 		return docs
 
     # retorna una lista con todo lo minado (a partir de la funcion lambda) en los textos presentes en el directorio raw_texts
-	def process_files(num_docs_folder, filter, process_function, *args):
+	def process_files(self, num_docs_folder, filter, process_function, *args):
 		bytes_data = self.__read_doc_bin(num_docs_folder)
 		docs = self.__transform_doc_bins_to_docs(bytes_data)
 		results = []
