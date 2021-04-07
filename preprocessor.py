@@ -69,9 +69,8 @@ class Preprocessor(object):
 #son componentes pensados para usar por separado, no dentro de un pipeline.
 #por eso cargo dos veces el modelo, una con cada componente
 	def preprocess_files(self):
-		sentencizer = nlp.create_pipe("sentencizer")
-		nlp.add_pipe(sentencizer)
-		tokenizer = nlp.Defaults.create_tokenizer(nlp)
+		nlp.add_pipe('sentencizer')
+		tokenizer = nlp.tokenizer
 		for fname in os.listdir("./raw_texts"):
 			doc = self.sentencize_file(fname)
 			final_sents = self.tokenize_file(doc, tokenizer)
