@@ -18,6 +18,6 @@ model = gensim.models.Word2Vec(sentences)
 model.wv.save_word2vec_format("./data/word2vec.txt")
 #realizar los pasos necesarios para que el modelo quede legible por spacy, es decir ejecutar en el directorio data:
 #gzip ./word2vec.txt
-#python3 -m spacy init-model es ./spacy.word2vec.model --vectors-loc word2vec.txt.gz
+#python3 -m spacy init vectors es word2vec.txt.gz ./spacy.word2vec.model
 #luego queda disponible para cargar de esta manera:
 #nlp_gensim = spacy.load('./data/spacy.word2vec.model/')
