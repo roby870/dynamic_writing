@@ -7,29 +7,28 @@ from spacy.tokens import Doc
 from tokens import *
 from chunks import *
 from sequences import *
-from basic_parser import *
 from gramatical_filters import *
 from similarity_filters import *
 from word_filters import *
 from utils import *
 
-Doc.set_extension("source", default='')
-
-class DynamicGenerator(object):
-    def __init__(self, model):
-		self._model = model
+Doc.set_extension("source", default='', force=True) #no existe la extensión source en la clase Doc
+                                                   #tal como está implementada en SpaCy, pero lo forzamos
+class DynamicGenerator(object):                 #para que no levante un error en las sucesivas cargas de este script
+    def __init__(self, model):                #en la fase de desarrollo del proyecto
+        self._model = model
 
     @property
-	def model(self):
-		return self._model
+    def model(self):
+        return self._model
 
-	@model.setter
-	def model(self, model):
-		self._model = model
+    @model.setter
+    def model(self, model):
+        self._model = model
 
-	@model.deleter
-	def model(self):
-		del self._model
+    @model.deleter
+    def model(self):
+        del self._model
 
     # selecciona el componente numero n (en una sequence el orden de los componentes es conocido)
     # y dentro de ese chunk el token taggeado como pos, de ese saca todas las features indicadas en sequence tags
@@ -91,7 +90,7 @@ class DynamicGenerator(object):
     # para luego evaluar si esta dentro de los mas similares semanticamente.
     # El parámetro n es para indicar con cuántos chunks se quiere concatenar cada secuencia
     # (un n grande dará como resultado un crecimiento exponencial en la cantidad de secuencias)
-    def concat_sequences_with_most_similars_chunks(sequences_list, chunks_list, pos, n, reverse=false):
+    def concat_sequences_with_most_similars_chunks(sequences_list, chunks_list, pos, n, reverse=False):
         sequences = []
         for sequence in sequences_list:
             filtered_chunks = self.__filter_chunks(
@@ -109,7 +108,7 @@ class DynamicGenerator(object):
 
     # pasar una copia de chunks_list si no se quiere modificarla, ya que este método elimina
     # de la lista los chunks que concatena en cada iteración
-    def concat_sequences_with_most_similars_chunks_forbbiding_repeats(sequences_list, chunks_list, pos, n, reverse=false):
+    def concat_sequences_with_most_similars_chunks_forbbiding_repeats(sequences_list, chunks_list, pos, n, reverse=False):
         sequences = []
         for sequence in sequences_list:
             filtered_chunks = self.__filter_chunks(
@@ -128,7 +127,7 @@ class DynamicGenerator(object):
 
     # como el anterior método pero sin considerar la concordancia gramatical,
     # tener en cuenta que borra los tags de la secuencia
-    def append_chunks_to_most_similars_sequences(sequences, chunks, n, reverse=false):
+    def append_chunks_to_most_similars_sequences(sequences, chunks, n, reverse=False):
         new_seqs = []
         for seq in sequences:
             similars = most_similar_chunks_to_target(seq, chunks, n)
@@ -138,7 +137,7 @@ class DynamicGenerator(object):
                 new_seqs.append(new_seq)
         return new_seqs
 
-    def append_chunks_to_most_similars_sequences_forbidding_repeats(sequences, chunks, n, reverse=false):
+    def append_chunks_to_most_similars_sequences_forbidding_repeats(sequences, chunks, n, reverse=False):
         new_seqs = []
         for seq in sequences:
             similars = most_similar_chunks_to_target(seq, chunks, n)

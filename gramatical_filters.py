@@ -5,17 +5,17 @@ class GramaticalFilters(object):
     def __init__(self, nlp_gensim):
         self._nlp_gensim = nlp_gensim
 
-	@property
-	def nlp_gensim(self):
-		return self._nlp_gensim
+    @property
+    def nlp_gensim(self):
+        return self._nlp_gensim
 
-	@text.setter
-	def nlp_gensim(self, nlp_gensim):
-		self._nlp_gensim = nlp_gensim
+    @nlp_gensim.setter
+    def nlp_gensim(self, nlp_gensim):
+        self._nlp_gensim = nlp_gensim
 
-	@text.deleter
-	def nlp_gensim(self):
-		del self._nlp_gensim
+    @nlp_gensim.deleter
+    def nlp_gensim(self):
+        del self._nlp_gensim
 
     def __create_chunk_from_subtree(token, doc, chunk_length):
         begin = list(token.subtree)[0].i
