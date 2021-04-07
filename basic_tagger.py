@@ -1,12 +1,18 @@
 import os
-from spacy.tokens import DocBin
 from pathlib import Path
+from spacy.tokens import Doc
+from spacy.tokens import DocBin
+
+
+Doc.set_extension("source", default='', force=True) #no existe la extensión source en la clase Doc
+#tal como está implementada en SpaCy, pero lo forzamos para que no levante un error
+#en las sucesivas cargas de este script en la fase de desarrollo del proyecto
 
 class BasicTagger(object):
 	def __init__(self, model):
 		self._model = model
 
-    @property
+	@property
 	def model(self):
 		return self._model
 
@@ -19,7 +25,7 @@ class BasicTagger(object):
 		del self._model
 
 	#lee el archivo llamado str en el directorio raw_texts y retorna un doc
-	def tag_file(str, model):
+	def tag_file(self, str):
 		data_folder = Path("./raw_texts")
 		data_path = data_folder / str
 		with data_path.open("r") as f:
@@ -31,7 +37,7 @@ class BasicTagger(object):
 	#taggea todos los textos del directorio num_docs_folder dentro del directorio raw_texts
 	#y guarda los docs resultantes como docbins en el archivo que llama "doc_bins" dentro
 	#de ese mismo directorio
-	def tag_files(model, num_docs_folder):
+	def tag_files(self, num_docs_folder):
 		doc_bin = DocBin(attrs=["LEMMA", "POS", "TAG", "DEP", "HEAD"], store_user_data=True)
 		data_folder = Path("./raw_texts/" + num_docs_folder)
 		texts = []
