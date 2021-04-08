@@ -18,7 +18,7 @@ dynamic_generator = DynamicGenerator(nlp_gensim)
 #que en el corpus cumplen la función de objeto directo):
 objs = similarity_filter.most_similar_chunks_to_target(seq, list_obj, 50)
 # para obtener los cincuenta más similares de la lista y devolverlos concatenados al target:
-sequences = dynamic_generator.append_chunks_to_most_similars_sequences([seq], list_obj, 50)
+sequences = dynamic_generator.append_chunks_to_most_similars_sequences(similarity_filter, [seq], list_obj, 50)
 
 
 #otro ejemplo: se elige una palabra o frase para buscar en una lista las más similares y

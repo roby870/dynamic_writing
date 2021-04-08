@@ -66,7 +66,7 @@ class DynamicGenerator(object):                 #para que no levante un error en
                                 results.append(chunk)
         return results
 
-    def __extend_sequence(sequence, components, similar_chunk, reverse=False):
+    def __extend_sequence(self, sequence, components, similar_chunk, reverse=False):
         new_components = components
         new_components.append(similar_chunk)
         if (reverse):
@@ -90,14 +90,14 @@ class DynamicGenerator(object):                 #para que no levante un error en
     # para luego evaluar si esta dentro de los mas similares semanticamente.
     # El parámetro n es para indicar con cuántos chunks se quiere concatenar cada secuencia
     # (un n grande dará como resultado un crecimiento exponencial en la cantidad de secuencias)
-    def concat_sequences_with_most_similars_chunks(sequences_list, chunks_list, pos, n, reverse=False):
+    def concat_sequences_with_most_similars_chunks(self, similarity_filter, sequences_list, chunks_list, pos, n, reverse=False):
         sequences = []
         for sequence in sequences_list:
             filtered_chunks = self.__filter_chunks(
                 chunks_list, pos, *sequence.get_features())
             if(len(filtered_chunks) < n):
                 continue
-            most_similars = most_similar_chunks_to_target(
+            most_similars = similarity_filter.most_similar_chunks_to_target(
                 sequence, filtered_chunks, n)
             components = sequence.components.copy()
             for similar_chunk in most_similars:
@@ -108,14 +108,14 @@ class DynamicGenerator(object):                 #para que no levante un error en
 
     # pasar una copia de chunks_list si no se quiere modificarla, ya que este método elimina
     # de la lista los chunks que concatena en cada iteración
-    def concat_sequences_with_most_similars_chunks_forbbiding_repeats(sequences_list, chunks_list, pos, n, reverse=False):
+    def concat_sequences_with_most_similars_chunks_forbbiding_repeats(self, similarity_filter, sequences_list, chunks_list, pos, n, reverse=False):
         sequences = []
         for sequence in sequences_list:
             filtered_chunks = self.__filter_chunks(
                 chunks_list, pos, *sequence.get_features())
             if(len(filtered_chunks) < n):
                 continue
-            most_similars = most_similar_chunks_to_target(
+            most_similars = similarity_filter.most_similar_chunks_to_target(
                 sequence, filtered_chunks, n)
             components = sequence.components.copy()
             for similar_chunk in most_similars:
@@ -127,20 +127,20 @@ class DynamicGenerator(object):                 #para que no levante un error en
 
     # como el anterior método pero sin considerar la concordancia gramatical,
     # tener en cuenta que borra los tags de la secuencia
-    def append_chunks_to_most_similars_sequences(sequences, chunks, n, reverse=False):
+    def append_chunks_to_most_similars_sequences(self, similarity_filter, sequences, chunks, n, reverse=False):
         new_seqs = []
         for seq in sequences:
-            similars = most_similar_chunks_to_target(seq, chunks, n)
+            similars = similarity_filter.most_similar_chunks_to_target(seq, chunks, n)
             for s in similars:
                 components = seq.components.copy() + [s]
                 new_seq = self.__extend_sequence(seq, components, s, reverse)
                 new_seqs.append(new_seq)
         return new_seqs
 
-    def append_chunks_to_most_similars_sequences_forbidding_repeats(sequences, chunks, n, reverse=False):
+    def append_chunks_to_most_similars_sequences_forbidding_repeats(self, similarity_filter, sequences, chunks, n, reverse=False):
         new_seqs = []
         for seq in sequences:
-            similars = most_similar_chunks_to_target(seq, chunks, n)
+            similars = similarity_filter.most_similar_chunks_to_target(seq, chunks, n)
             for s in similars:
                 components = seq.components.copy() + [s]
                 new_seq = self.__extend_sequence(seq, components, s, reverse)

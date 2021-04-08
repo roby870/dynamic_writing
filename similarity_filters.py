@@ -13,8 +13,8 @@ class SimilarityFilters(object):
 
 	#devuelve las n oraciones que tienen los n tokens más similares a target_token
 	#(incluye tokens de texto igual al de target_token)
-	def sents_with_token_incluiding_equals(doc, target_token, n):
-		list=most_similar_and_equals_tokens(doc, target_token, n)
+	def sents_with_token_incluiding_equals(self, doc, target_token, n):
+		list=self.most_similar_and_equals_tokens(doc, target_token, n)
 		sents = []
 		for token in list:
 			sents.append(token.sent)
@@ -22,7 +22,7 @@ class SimilarityFilters(object):
 
 	#recibe un token o un span y una lista de chunks
 	#retorna los n objetos más similares (eliminando repetidos)
-	def most_similar_chunks_to_target(target, chunks, n):
+	def most_similar_chunks_to_target(self, target, chunks, n):
 		filtered_chunks = []
 		for chunk in chunks:
 			if (chunk.has_vector and chunk.vector_norm != 0 and target.text.lower() != chunk.text):
