@@ -17,7 +17,7 @@ class GramaticalFilters(object):
     def nlp_gensim(self):
         del self._nlp_gensim
 
-    def __create_chunk_from_subtree(token, doc, chunk_length):
+    def __create_chunk_from_subtree(self, token, doc, chunk_length):
         begin = list(token.subtree)[0].i
         end = list(token.subtree)[chunk_length - 1].i
         span = doc[begin:end+1]
@@ -36,7 +36,7 @@ class GramaticalFilters(object):
     # busca en doc un token que esté taggeado como dep_tag y
     # si su subtree es una secuencia de tokens taggeada como
     # pos_tags, la selecciona. Retorna todas las seleccionadas (chunks)
-    def process_pos_sequence_by_dep_tag(doc, dep_tag, pos_tags):
+    def process_pos_sequence_by_dep_tag(self, doc, dep_tag, pos_tags):
         chunks = []
         chunk_length = len(pos_tags)
         for token in doc:
@@ -51,13 +51,13 @@ class GramaticalFilters(object):
                             chunks.append(chunk)
         return chunks  # retorna una lista de spans
 
-    def __append_token_as_chunk(token, doc, chunks):
+    def __append_token_as_chunk(self, token, doc, chunks):
         t = Tokens(token.text.lower(), token.pos_, token.tag_)
         new_token = self.nlp_gensim(token.text.lower())
         chunks.append(Chunks(token.text.lower(), [
                       t], doc._.source, new_token.has_vector, new_token.vector, new_token.vector_norm))
 
-    def __get_tokens_by_pos_and_attrs(doc, pos_tag, attrs):
+    def __get_tokens_by_pos_and_attrs(self, doc, pos_tag, attrs):
         number_of_attrs = len(attrs)
         chunks = []
         for token in doc:
@@ -72,7 +72,7 @@ class GramaticalFilters(object):
                             self.__append_token_as_chunk(token, doc, chunks)
         return chunks
 
-    def __get_tokens_by_pos(doc, pos_tag):
+    def __get_tokens_by_pos(self, doc, pos_tag):
         chunks = []
         for token in doc:
             if (token.pos_ == pos_tag):
@@ -83,14 +83,14 @@ class GramaticalFilters(object):
     # tengan todos los atributos indicados en attrs, por ejemplo "Gender=Fem", "Number=Plur".
     # Los atributos se pasan como strings. Puede no recibir ningun atributo, en ese caso
     # simplemente devuelve todos los tokens taggeados como pos_tag sin importar los atributos de su tag
-    def process_tokens_by_pos(doc, pos_tag, *attrs):
+    def process_tokens_by_pos(self, doc, pos_tag, *attrs):
         if(len(attrs) > 0):
             chunks = self.__get_tokens_by_pos_and_attrs(doc, pos_tag, attrs)
         else:
             chunks = self.__get_tokens_by_pos(doc, pos_tag)
         return chunks
 
-    def __create_chunk_from_bigram_verbs(token, doc):
+    def __create_chunk_from_bigram_verbs(self, token, doc):
         begin = token.i
         end = token.nbor().i
         span = doc[begin:end+1]
@@ -107,7 +107,7 @@ class GramaticalFilters(object):
 
     # busca bigramas de pos AUX + tag que respondan a las caracteristicas de
     # número y tiempo parametrizadas
-    def process_bigrams_verbs_with_auxiliar(doc, number, tense):
+    def process_bigrams_verbs_with_auxiliar(self, doc, number, tense):
         bigrams = []
         for token in doc:
             if token.pos_ == "AUX":  # cuando se encuentra con un auxiliar, chequea que el verbo conjugado adyacente presente las condiciones parametrizadas
@@ -120,7 +120,7 @@ class GramaticalFilters(object):
 
 
     # busca verbos con las caracteristicas indicadas
-    def process_one_word_verbs(doc, person, number, tense, mood):
+    def process_one_word_verbs(self, doc, person, number, tense, mood):
         verbs=[]
         for token in doc:
             if token.pos_ == "VERB":
@@ -131,7 +131,7 @@ class GramaticalFilters(object):
         return verbs  # retorna una lista de Chunks
 
     # colocar stopwords en true si se quieren incluir stopwords
-    def get_head(doc, dep_tag, stopwords=False):
+    def get_head(self, doc, dep_tag, stopwords=False):
         chunks=[]
         if(not stopwords):
             for token in doc:
@@ -145,7 +145,7 @@ class GramaticalFilters(object):
         return chunks
 
     # selecciona los tokens taggeados como dep_tag
-    def process_token_by_dep(doc, dep_tag):
+    def process_token_by_dep(self, doc, dep_tag):
         chunks=[]
         for token in doc:
             if token.dep_ == dep_tag:
