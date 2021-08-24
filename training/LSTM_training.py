@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 def prepare_lstm(corpus):
-    data_folder = Path("./LSTM_corpus")
+    data_folder = Path("../LSTM_corpus")
     data_path = data_folder / corpus
     with data_path.open("r", encoding="utf-8") as f:
         text=f.read()
@@ -77,7 +77,7 @@ def train_lstm(model, params, epochs = 1, batch_size = 256):
         print("Generating text after epoch: %d" % epoch)
 
         start_index = random.randint(0, len(params['text']) - params['maxlen'] - 1)
-        for diversity in [0.1, 0.5, 0.7, 1.0]:
+        for diversity in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]:
             print("...Diversity:", diversity)
 
             generated = ""

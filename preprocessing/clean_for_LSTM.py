@@ -2,7 +2,7 @@ import re
 from pathlib import Path	
 
 def clean_for_lstm(file_name):
-    data_folder = Path("./LSTM_corpus")
+    data_folder = Path("../LSTM_corpus")
     data_path = data_folder / file_name
     with data_path.open("r") as f:
         text=f.read()

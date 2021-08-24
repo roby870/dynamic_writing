@@ -1,7 +1,7 @@
 #script de ejemplo
 import spacy
-from sequences import *
-from similarity_filters import *
+from core_classes.sequences import *
+from filters.similarity_filters import *
 from dynamic_generator import *
 #Supongamos que queremos establecer una secuencia sencilla que consista en la
 #palabra "Vi" + obj (sustantivos que en el corpus cumplan la función sintáctica de objeto directo)

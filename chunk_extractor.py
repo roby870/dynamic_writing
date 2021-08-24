@@ -1,16 +1,14 @@
 import spacy
 from pathlib import Path
-import os
-import re
 from spacy.tokens import DocBin
 from spacy.tokens import Doc
-from tokens import *
-from chunks import *
-from sequences import *
-from gramatical_filters import *
-from similarity_filters import *
-from word_filters import *
-from utils import *
+from core_classes.tokens import *
+from core_classes.chunks import *
+from core_classes.sequences import *
+from filters.gramatical_filters import *
+from filters.similarity_filters import *
+from filters.word_filters import *
+from utils.utils import *
 
 """no existe la extensión source en la clase Doc
 tal como está implementada en SpaCy, pero lo forzamos

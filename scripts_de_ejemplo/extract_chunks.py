@@ -2,7 +2,7 @@
 import spacy
 from chunk_extractor import *
 from utils import *
-from gramatical_filters import *
+from filters.gramatical_filters import *
 from pickle_manager import *
 
 """cargamos los modelos, el de gensim es el que entrenamos y el que usaremos para

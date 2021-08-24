@@ -1,5 +1,5 @@
 from pathlib import Path
-import os
+
 
 def remove_last_spaces(chunks_list):
 	for chunk in chunks_list:

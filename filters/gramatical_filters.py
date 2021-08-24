@@ -1,5 +1,5 @@
-from tokens import *
-from chunks import *
+from ..core_classes.tokens import *
+from ..core_classes.chunks import *
 
 class GramaticalFilters(object):
     def __init__(self, nlp_gensim):
