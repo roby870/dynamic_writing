@@ -1,8 +1,7 @@
 <h1>Dynamic Writing: asistente de escritura</h1>
 
 <h4>Estado actual del proyecto</h4>
-El proyecto aún se encuentra en desarrollo, completamente focalizado por el momento en el backend. Si bien se ha probado el mecanismo actual de generación de secuencias, para lo cual por el momento se deben instanciar los objetos pertinentes desde el intérprete de Python 3 en una consola, se van a agregar más componentes que permitan utilizar modelos entrenados con la arquitectura de los transformers. Básicamente, la idea consiste en establecer una comunicación entre los chunks y las secuencias que este sistema ya genera y un transformer que contribuya en la extensión dinámica de los textos generados.
-Por otro lado, el paso inmediato es realizar todos los cambios necesarios en el código para que el sistema sea compatible con la versión 3.0 de SpaCy.    
+El proyecto aún se encuentra en desarrollo, completamente focalizado por el momento en el backend. Si bien se ha probado el mecanismo actual de generación de secuencias, para lo cual por el momento se deben instanciar los objetos pertinentes desde el intérprete de Python 3 en una consola, se van a agregar más componentes que permitan utilizar modelos entrenados mediante deep learning, utilizando arquitecturas tales como LSTM ó Decoder. Básicamente, la idea consiste en establecer una comunicación entre los chunks y las secuencias que este sistema ya genera y modelos de Natural Language Generation entrenados con deep learning que contribuyan en la extensión dinámica de los textos generados.    
 
 <h4>Preprocesamiento del corpus y entrenamiento del modelo de similitud mediante el algoritmo word2vec</h4>
 

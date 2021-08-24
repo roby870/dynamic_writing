@@ -12,10 +12,14 @@ from similarity_filters import *
 from word_filters import *
 from utils import *
 
-Doc.set_extension("source", default='', force=True) #no existe la extensión source en la clase Doc
-                                                   #tal como está implementada en SpaCy, pero lo forzamos
-class DynamicGenerator(object):                 #para que no levante un error en las sucesivas cargas de este script
-    def __init__(self, model):                #en la fase de desarrollo del proyecto
+"""no existe la extensión source en la clase Doc
+tal como está implementada en SpaCy, pero lo forzamos
+para que no levante un error en las sucesivas cargas de este script
+en la fase de desarrollo del proyecto""" 
+Doc.set_extension("source", default='', force=True) 
+                                                  
+class DynamicGenerator(object):                
+    def __init__(self, model):                
         self._model = model
 
     @property
@@ -30,10 +34,10 @@ class DynamicGenerator(object):                 #para que no levante un error en
     def model(self):
         del self._model
 
-    # selecciona el componente numero n (en una sequence el orden de los componentes es conocido)
-    # y dentro de ese chunk el token taggeado como pos, de ese saca todas las features indicadas en sequence tags
-    # y las establece como las de la secuencia. Pasar los sequence tags en
-    # mayusculas, por ejemplo: "Person", "Gender", "Mood"
+    """selecciona el componente numero n (en una sequence el orden de los componentes es conocido)
+    y dentro de ese chunk el token taggeado como pos, de ese saca todas las features indicadas en sequence tags
+    y las establece como las de la secuencia. Pasar los sequence tags en
+    mayusculas, por ejemplo: "Person", "Gender", "Mood" """
     def set_current_tags(sequence_list, n, pos, *sequence_tags):
         for sequence in sequence_list:
             for token in sequence.components[n].tokens:
@@ -47,9 +51,9 @@ class DynamicGenerator(object):                 #para que no levante un error en
                                 match = match[:len(match) - 1]
                             sequence.set_tag(match)
 
-    # se deben pasar todos los tags actuales de la secuencia y la función chequea
-    # que el token del chunk taggeado como pos cumpla con todos los sequence_tags indicados,
-    # en ese caso selecciona el chunk
+    """se deben pasar todos los tags actuales de la secuencia y la función chequea
+    que el token del chunk taggeado como pos cumpla con todos los sequence_tags indicados,
+    en ese caso selecciona el chunk"""
     def __filter_chunks(chunks, pos, *sequence_tags):
         number_of_attrs = len(sequence_tags)
         results = []
@@ -84,12 +88,13 @@ class DynamicGenerator(object):                 #para que no levante un error en
                             has_vector, vector, vector_norm)
         return new_seq
 
-    # selecciona los n chunks mas similares a cada secuencia y los concatena
-    # como lo hace? utiliza el token taggeado como pos de cada chunk para chequear que su tag
-    # concuerde con las features de la secuencia, en ese caso lo selecciona
-    # para luego evaluar si esta dentro de los mas similares semanticamente.
-    # El parámetro n es para indicar con cuántos chunks se quiere concatenar cada secuencia
-    # (un n grande dará como resultado un crecimiento exponencial en la cantidad de secuencias)
+    """selecciona los n chunks mas similares a cada secuencia y los concatena
+    como lo hace? utiliza el token taggeado como pos de cada chunk para chequear que su tag
+    concuerde con las features de la secuencia, en ese caso lo selecciona
+    para luego evaluar si esta dentro de los mas similares semanticamente.
+    El parámetro n es para indicar con cuántos chunks se quiere concatenar cada secuencia
+    (un n grande dará como resultado un crecimiento exponencial en la cantidad de secuencias)"""
+    
     def concat_sequences_with_most_similars_chunks(self, similarity_filter, sequences_list, chunks_list, pos, n, reverse=False):
         sequences = []
         for sequence in sequences_list:
@@ -106,8 +111,8 @@ class DynamicGenerator(object):                 #para que no levante un error en
                 sequences.append(new_seq)
         return sequences
 
-    # pasar una copia de chunks_list si no se quiere modificarla, ya que este método elimina
-    # de la lista los chunks que concatena en cada iteración
+    """pasar una copia de chunks_list si no se quiere modificarla, ya que este método elimina
+    de la lista los chunks que concatena en cada iteración"""
     def concat_sequences_with_most_similars_chunks_forbbiding_repeats(self, similarity_filter, sequences_list, chunks_list, pos, n, reverse=False):
         sequences = []
         for sequence in sequences_list:
@@ -125,8 +130,8 @@ class DynamicGenerator(object):                 #para que no levante un error en
                 chunks_list.remove(similar_chunk)
         return sequences
 
-    # como el anterior método pero sin considerar la concordancia gramatical,
-    # tener en cuenta que borra los tags de la secuencia
+    """como el anterior método pero sin considerar la concordancia gramatical,
+    tener en cuenta que borra los tags de la secuencia"""
     def append_chunks_to_most_similars_sequences(self, similarity_filter, sequences, chunks, n, reverse=False):
         new_seqs = []
         for seq in sequences:
@@ -148,8 +153,8 @@ class DynamicGenerator(object):                 #para que no levante un error en
                 chunks.remove(s)
         return new_seqs
 
-    # concatena un string en el caso de que la secuencia esté taggeada
-    # con todos los atributos indicados en sequence_tags
+    """concatena un string en el caso de que la secuencia esté taggeada
+    con todos los atributos indicados en sequence_tags"""
     def concat_string(sequences, string, *sequence_tags):
         number_of_attrs = len(sequence_tags)
         for seq in sequences:

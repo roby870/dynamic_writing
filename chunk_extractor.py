@@ -12,10 +12,15 @@ from similarity_filters import *
 from word_filters import *
 from utils import *
 
-Doc.set_extension("source", default='', force=True) #no existe la extensión source en la clase Doc
-													#tal como está implementada en SpaCy, pero lo forzamos
-class Chunk_Extractor(object):						#para que no levante un error en las sucesivas cargas de este script
-	def __init__(self, model):						#en la fase de desarrollo del proyecto
+"""no existe la extensión source en la clase Doc
+tal como está implementada en SpaCy, pero lo forzamos
+para que no levante un error en las sucesivas cargas de este script
+en la fase de desarrollo del proyecto"""
+
+Doc.set_extension("source", default='', force=True) 
+													
+class Chunk_Extractor(object):						
+	def __init__(self, model):						
 		self._model = model
 
 	@property

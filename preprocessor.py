@@ -5,12 +5,12 @@ import os
 
 nlp = spacy.load("es_core_news_md",  disable=["tagger", "parser", "ner"])
 
-#procesa con la funcion preprocess_files() los archivos que están en ./raw_texts
-#y los almacena en ./training_corpus. La limpieza que hace está pensada en función
-#tanto de la forma en la que Gensim espera los textos para alimentar a sus algoritmos como
-#de las características de los textos del proyecto Scriptorium, comentar cualquiera
-#que se quiera suprimir para un prcesamiento determinado o descomentar la que se necesite
-#de las comentadas
+"""procesa con la funcion preprocess_files() los archivos que están en ./raw_texts
+y los almacena en ./training_corpus. La limpieza que hace está pensada en función
+tanto de la forma en la que Gensim espera los textos para alimentar a sus algoritmos como
+de las características de los textos del proyecto Scriptorium, comentar cualquier regex
+que se quiera suprimir para un prcesamiento determinado o descomentar la que se necesite
+de las comentadas"""
 
 class Preprocessor(object):
 
@@ -62,12 +62,13 @@ class Preprocessor(object):
 				f.write("\n")
 			f.close()
 
-#para cargar nlp con tokenizer y sentencizer
-#no funciona, cuando va a procesar el texto levanta un eror,
-#señala el tipo de dato doc como erróneo porque sea que primero se ejecute el sentencizer
-#o el tokenizer, el segundo componente espera un string pero recibe un doc.
-#son componentes pensados para usar por separado, no dentro de un pipeline.
-#por eso cargo dos veces el modelo, una con cada componente
+"""para cargar nlp con tokenizer y sentencizer
+no funciona, cuando va a procesar el texto levanta un eror,
+señala el tipo de dato doc como erróneo porque sea que primero se ejecute el sentencizer
+o el tokenizer, el segundo componente espera un string pero recibe un doc.
+son componentes pensados para usar por separado, no dentro de un pipeline.
+por eso cargo dos veces el modelo, una con cada componente"""
+
 	def preprocess_files(self):
 		nlp.add_pipe('sentencizer')
 		tokenizer = nlp.tokenizer

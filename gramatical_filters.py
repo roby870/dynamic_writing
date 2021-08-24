@@ -32,10 +32,11 @@ class GramaticalFilters(object):
         chunk = Chunks(span.text.lower(), tokens, doc._.source, has_vector, vector, vector_norm)
         return chunk
 
-    # recibe una cadena de tags(pos_tags es una lista de strings),
-    # busca en doc un token que esté taggeado como dep_tag y
-    # si su subtree es una secuencia de tokens taggeada como
-    # pos_tags, la selecciona. Retorna todas las seleccionadas (chunks)
+    """recibe una cadena de tags(espera pos_tags como una lista de strings),
+    busca en doc un token que esté taggeado como dep_tag y
+    si su subtree es una secuencia de tokens taggeada como
+    pos_tags, la selecciona. Retorna todas las seleccionadas (chunks)"""
+
     def process_pos_sequence_by_dep_tag(self, doc, dep_tag, pos_tags):
         chunks = []
         chunk_length = len(pos_tags)
@@ -79,10 +80,10 @@ class GramaticalFilters(object):
                 self.__append_token_as_chunk(token, doc, chunks)
         return chunks
 
-    # selecciona los tokens taggeados como pos_tag y que entre su tag
-    # tengan todos los atributos indicados en attrs, por ejemplo "Gender=Fem", "Number=Plur".
-    # Los atributos se pasan como strings. Puede no recibir ningun atributo, en ese caso
-    # simplemente devuelve todos los tokens taggeados como pos_tag sin importar los atributos de su tag
+    """selecciona los tokens taggeados como pos_tag y que entre su tag
+    tengan todos los atributos indicados en attrs, por ejemplo "Gender=Fem", "Number=Plur".
+    Los atributos se pasan como strings. Puede no recibir ningun atributo, en ese caso
+    simplemente devuelve todos los tokens taggeados como pos_tag sin importar los atributos de su tag"""
     def process_tokens_by_pos(self, doc, pos_tag, *attrs):
         if(len(attrs) > 0):
             chunks = self.__get_tokens_by_pos_and_attrs(doc, pos_tag, attrs)
@@ -105,8 +106,8 @@ class GramaticalFilters(object):
         chunk = Chunks(span.text.lower(), tokens, doc._.source, has_vector, vector, vector_norm)
         return chunk
 
-    # busca bigramas de pos AUX + tag que respondan a las caracteristicas de
-    # número y tiempo parametrizadas
+    """busca bigramas de pos AUX + tag que respondan a las caracteristicas de
+    número y tiempo parametrizadas"""
     def process_bigrams_verbs_with_auxiliar(self, doc, number, tense):
         bigrams = []
         for token in doc:

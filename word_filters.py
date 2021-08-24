@@ -1,7 +1,7 @@
 class WordFilters(object):
 
-	#retorna todas las oraciones que contienen word, incluso las que lo contienen
-	#en mayúsculas
+	"""retorna todas las oraciones que contienen word, incluso las que lo contienen
+	en mayúsculas"""
 	def sents_with_word(doc, word):
 		selected_sents = []
 		sents = list(doc.sents)
@@ -12,8 +12,8 @@ class WordFilters(object):
 					break
 		return selected_sents
 
-	#retorna todas las sents eliminando stopwords, signos de puntuación,
-	#espacios y word
+	"""retorna todas las sents eliminando stopwords, signos de puntuación,
+	espacios y word"""
 	def __clean_sents(sents, word):
 		new_sents = []
 		for s in sents:
@@ -24,9 +24,9 @@ class WordFilters(object):
 			new_sents.append(new_sent)
 		return new_sents
 
-	#busca en doc todas las oraciones que contienen la palabra word,
-	#y luego las retorna "limpias"
-	def contexts_words_lists(doc, word):
+	"""busca en doc todas las oraciones que contienen la palabra word,
+	y luego las retorna "limpias" """
+	def contexts_words_lists(self, doc, word):
 		list = []
 		sents=sents_with_word(doc, word)
 		clean_sent=self.__clean_sents(sents, word)
@@ -60,8 +60,8 @@ class WordFilters(object):
 					break
 		return None
 
-	#retorna n-gramas como strings filtrando repetidos
-	#n-gramas de l words a la izquierda de word y r words a la derecha de word
+	"""Retorna n-gramas como strings filtrando repetidos.
+	N-gramas de l words a la izquierda de word y r words a la derecha de word"""
 	def get_ngrams_from_word(doc, text, l, r):
 		ngrams=[]
 		for token in doc:
@@ -78,9 +78,9 @@ class WordFilters(object):
 				ngrams_set_texts.append(ngram.text)
 		return ngrams_set
 
-	#recibe el string str, por ejemplo la preposicion "en", y retorna todos los chunks
-	#de la lista chunks que comienzan con str, por ejemplo todos los que comienzan con "en"
-	def filter_chunks_by_first_word(chunks, str): #str pasarlo en minuscula
+	"""recibe el string str, por ejemplo la preposicion "en", y retorna todos los chunks
+	de la lista chunks que comienzan con str, por ejemplo todos los que comienzan con "en" """
+	def filter_chunks_by_first_word(chunks, str): #str pasarlo en minúscula
 		results = []
 		for chunk in chunks:
 			if(chunk.tokens[0].text == str):

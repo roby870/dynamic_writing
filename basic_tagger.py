@@ -3,10 +3,10 @@ from pathlib import Path
 from spacy.tokens import Doc
 from spacy.tokens import DocBin
 
-
-Doc.set_extension("source", default='', force=True) #no existe la extensión source en la clase Doc
-#tal como está implementada en SpaCy, pero lo forzamos para que no levante un error
-#en las sucesivas cargas de este script en la fase de desarrollo del proyecto
+"""no existe la extensión source en la clase Doc
+tal como está implementada en SpaCy, pero lo forzamos para que no levante un error
+en las sucesivas cargas de este script en la fase de desarrollo del proyecto"""
+Doc.set_extension("source", default='', force=True) 
 
 class BasicTagger(object):
 	def __init__(self, model):

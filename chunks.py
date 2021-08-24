@@ -93,3 +93,4 @@ class Chunks(object):
 				self.vector_norm = doc.vector_norm
 				self.has_vector = doc.has_vector
 				self.text = doc.text
+				break
