@@ -1,5 +1,11 @@
-from ..core_classes.tokens import *
-from ..core_classes.chunks import *
+import sys
+import os
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+
+from core_classes.tokens import *
+from core_classes.chunks import *
 
 class GramaticalFilters(object):
     def __init__(self, nlp_gensim):

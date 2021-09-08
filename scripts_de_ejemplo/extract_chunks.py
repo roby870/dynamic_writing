@@ -1,9 +1,16 @@
 #script de ejemplo
 import spacy
 from chunk_extractor import *
-from utils import *
+
+import sys
+import os
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+
 from filters.gramatical_filters import *
-from pickle_manager import *
+from utils.utils import *
+from utils.pickle_manager import *
 
 """cargamos los modelos, el de gensim es el que entrenamos y el que usaremos para
 medir la similitud semántica, de acuerdo al corpus de entrenamiento utilizado"""

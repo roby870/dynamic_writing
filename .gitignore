@@ -3,3 +3,4 @@ data/
 raw_texts/
 training_corpus/
 LSTM_corpus
+training/models

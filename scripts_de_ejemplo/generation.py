@@ -1,5 +1,12 @@
 #script de ejemplo
 import spacy
+
+import sys
+import os
+current = os.path.dirname(os.path.realpath(__file__))
+parent = os.path.dirname(current)
+sys.path.append(parent)
+
 from core_classes.sequences import *
 from filters.similarity_filters import *
 from dynamic_generator import *
